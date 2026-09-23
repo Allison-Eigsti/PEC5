@@ -1,7 +1,21 @@
+function normalizeApiUrl(value) {
+  const rawValue = String(value || '').trim();
+
+  if (!rawValue) {
+    return 'http://localhost:4000';
+  }
+
+  const absoluteValue = rawValue.startsWith('/') || /^https?:\/\//i.test(rawValue)
+    ? rawValue
+    : `https://${rawValue}`;
+
+  return absoluteValue
+    .replace(/\/+$/, '')
+    .replace(/\/api$/, '');
+}
+
 const configuredApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-const API_BASE_URL = configuredApiUrl
-  .replace(/\/+$/, '')
-  .replace(/\/api$/, '');
+const API_BASE_URL = normalizeApiUrl(configuredApiUrl);
 const DEFAULT_TIMEOUT_MS = 30000;
 
 class ApiError extends Error {

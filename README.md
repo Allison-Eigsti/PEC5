@@ -106,7 +106,7 @@ MAX_REQUEST_BYTES=4000000
 
 The Cloudinary folder is fixed to `secondhand-listings` in the backend and no longer requires an environment variable.
 
-Vercel's Express support recognizes the backend `index.js` entry. The API is stateless; Multer uses memory storage and MongoDB connections are cached between warm invocations.
+Vercel's Node runtime recognizes the backend `server.js` entry. `backend/vercel.json` sets the framework preset to `null` (Other) so a project previously configured as Vite does not serve the source files statically. The API is stateless; Multer uses memory storage and MongoDB connections are cached between warm invocations.
 
 ### Frontend Vercel variables
 
@@ -116,7 +116,7 @@ Set this in the frontend Vercel project:
 VITE_API_URL=https://api.example.com
 ```
 
-Use the API origin only; the frontend adds `/api` itself. The variable name is case-sensitive and must begin with `VITE_`. After changing a Vite variable in Vercel, redeploy the frontend so the new build receives it.
+Use the API origin only, including `https://`; for example, `https://api.example.com`. Do not set it to a bare domain such as `api.example.com`, and do not include the frontend domain. The frontend adds `/api` itself. The variable name is case-sensitive and must begin with `VITE_`. After changing a Vite variable in Vercel, redeploy the frontend so the new build receives it.
 
 `frontend/vercel.json` rewrites client-side routes to `index.html` so direct visits to routes such as `/my-listings` work.
 
@@ -147,7 +147,7 @@ The frontend sends `credentials: include` on API requests. The API allows the ex
 cd backend
 npm run dev
 npm test
-node --check index.js
+node --check server.js
 
 # Frontend
 cd frontend
