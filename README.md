@@ -95,15 +95,16 @@ NODE_ENV=production
 MONGODB_URI=...
 JWT_SECRET=...
 JWT_EXPIRES_IN=7d
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-CLOUDINARY_FOLDER=secondhand-listings
+# Cloudinary credentials
+CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
+CLOUDINARY_TIMEOUT_MS=20000
 CLIENT_ORIGIN=https://shop.example.com
 COOKIE_SAME_SITE=lax
 MAX_IMAGE_BYTES=786432
 MAX_REQUEST_BYTES=4000000
 ```
+
+The Cloudinary folder is fixed to `secondhand-listings` in the backend and no longer requires an environment variable.
 
 Vercel's Express support recognizes the backend `index.js` entry. The API is stateless; Multer uses memory storage and MongoDB connections are cached between warm invocations.
 
@@ -115,7 +116,17 @@ Set this in the frontend Vercel project:
 VITE_API_URL=https://api.example.com
 ```
 
+Use the API origin only; the frontend adds `/api` itself. The variable name is case-sensitive and must begin with `VITE_`. After changing a Vite variable in Vercel, redeploy the frontend so the new build receives it.
+
 `frontend/vercel.json` rewrites client-side routes to `index.html` so direct visits to routes such as `/my-listings` work.
+
+Before testing the deployed frontend, open the backend health endpoint directly:
+
+```text
+https://api.example.com/api/health
+```
+
+It should return JSON containing `{"status":"ok"}`. Then open `/api/listings`; it should return an object with an `items` array. If either URL returns HTML, check the Vercel project root directory (`backend`) and `VITE_API_URL`.
 
 ### Custom domains and cookies
 

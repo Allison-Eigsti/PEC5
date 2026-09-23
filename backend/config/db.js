@@ -18,6 +18,9 @@ async function connectToDatabase() {
     connectionPromise = mongoose
       .connect(process.env.MONGODB_URI, {
         serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
+        socketTimeoutMS: 10000,
+        bufferTimeoutMS: 10000,
       })
       .catch((error) => {
         connectionPromise = undefined;

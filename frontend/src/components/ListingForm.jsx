@@ -1,19 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CATEGORY_OPTIONS, CONDITION_OPTIONS, MAX_IMAGES, MAX_IMAGE_BYTES, SIZE_OPTIONS, STATUS_OPTIONS } from '../utils/constants';
 import { prepareImages } from '../utils/image';
 import ErrorMessage from './ErrorMessage';
 import FormField, { inputClass } from './FormField';
 
 function FilePreview({ file, onRemove }) {
-  const previewUrl = useMemo(() => URL.createObjectURL(file), [file]);
+  const [previewUrl, setPreviewUrl] = useState('');
 
   useEffect(() => {
-    return () => URL.revokeObjectURL(previewUrl);
-  }, [previewUrl]);
+    const objectUrl = URL.createObjectURL(file);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPreviewUrl(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   return (
     <div className="group relative aspect-square overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
-      <img src={previewUrl} alt="Selected clothing preview" className="h-full w-full object-cover" />
+      {previewUrl ? <img src={previewUrl} alt="Selected clothing preview" className="h-full w-full object-cover" /> : <div className="h-full w-full animate-pulse bg-stone-200" />}
       <button
         type="button"
         onClick={() => onRemove(file)}

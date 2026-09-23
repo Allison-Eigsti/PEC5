@@ -22,6 +22,7 @@ export default function HomePage() {
   const [data, setData] = useState({ items: [], page: 1, pages: 1, total: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const items = Array.isArray(data.items) ? data.items : [];
 
   useEffect(() => {
     let active = true;
@@ -135,16 +136,16 @@ export default function HomePage() {
         <div className="mt-8">
           {loading ? <LoadingState label="Finding good pieces…" /> : null}
           {!loading && error ? <ErrorMessage>{error}</ErrorMessage> : null}
-          {!loading && !error && data.items.length === 0 ? (
+          {!loading && !error && items.length === 0 ? (
             <EmptyState
               title="No pieces match those filters"
               description="Try broadening your search, or be the first to share something great with the community."
               action={<button type="button" onClick={clearFilters} className="rounded-2xl bg-emerald-800 px-5 py-3 text-sm font-bold text-white">Clear filters</button>}
             />
           ) : null}
-          {!loading && !error && data.items.length > 0 ? (
+          {!loading && !error && items.length > 0 ? (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {data.items.map((listing) => <ListingCard key={listing._id} listing={listing} />)}
+              {items.map((listing) => <ListingCard key={listing._id} listing={listing} />)}
             </div>
           ) : null}
         </div>
