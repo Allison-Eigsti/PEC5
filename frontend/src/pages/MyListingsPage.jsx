@@ -7,6 +7,8 @@ import ListingCard from '../components/ListingCard';
 import LoadingState from '../components/LoadingState';
 import StatusBadge from '../components/StatusBadge';
 
+const listingActionClass = 'inline-flex h-8 items-center justify-center rounded-full border px-3 text-xs font-bold leading-none transition';
+
 export default function MyListingsPage() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,9 +95,9 @@ export default function MyListingsPage() {
                 <ListingCard key={listing._id} listing={listing}>
                   <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={listing.status} />
-                    <Link to={`/listings/${listing._id}/edit`} className="ml-auto text-xs font-bold text-emerald-800 underline underline-offset-4">Edit</Link>
+                    <Link to={`/listings/${listing._id}/edit`} className={`${listingActionClass} ml-auto border-emerald-300 text-emerald-800 hover:bg-emerald-50`}>Edit</Link>
                     {listing.status !== 'hidden' ? (
-                      <button type="button" disabled={pendingId === listing._id} onClick={() => hideListing(listing._id)} className="text-xs font-bold text-red-700 underline underline-offset-4 disabled:opacity-50">Hide</button>
+                      <button type="button" disabled={pendingId === listing._id} onClick={() => hideListing(listing._id)} className={`${listingActionClass} border-red-300 text-red-700 hover:bg-red-50 disabled:opacity-50`}>Hide</button>
                     ) : null}
                   </div>
                 </ListingCard>
