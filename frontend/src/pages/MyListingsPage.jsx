@@ -97,7 +97,7 @@ export default function MyListingsPage() {
                     <StatusBadge status={listing.status} />
                     <Link to={`/listings/${listing._id}/edit`} className={`${listingActionClass} ml-auto border-emerald-300 text-emerald-800 hover:bg-emerald-50`}>Edit</Link>
                     {listing.status !== 'hidden' ? (
-                      <button type="button" disabled={pendingId === listing._id} onClick={() => hideListing(listing._id)} className={`${listingActionClass} border-red-300 text-red-700 hover:bg-red-50 disabled:opacity-50`}>Hide</button>
+                      <button type="button" disabled={pendingId === listing._id} onClick={() => hideListing(listing._id)} className={`${listingActionClass} ml-auto border-red-300 text-red-700 hover:bg-red-50 disabled:opacity-50`}>Hide</button>
                     ) : null}
                   </div>
                 </ListingCard>
